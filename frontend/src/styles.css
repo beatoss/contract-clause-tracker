@@ -1,0 +1,10 @@
+html,
+body {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}

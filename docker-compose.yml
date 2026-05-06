@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: sqlite:////app/data/clauses.db
+    volumes:
+      - clause-data:/app/data
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "4200:4200"
+
+volumes:
+  clause-data:

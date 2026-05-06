@@ -1,0 +1,17 @@
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+data/
+backend/data/
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+
+# Environment
+.env
