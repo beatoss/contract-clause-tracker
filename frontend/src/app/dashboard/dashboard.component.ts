@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ApiService, DocumentGroup, DocumentListResponse, DocumentSummary } from './api.service';
+import { ApiService, DocumentGroup, DocumentListResponse, DocumentSummary } from '../api.service';
 
 @Component({
   selector: 'app-dashboard',

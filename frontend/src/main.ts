@@ -2,8 +2,8 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter, Routes } from '@angular/router';
 import { AppComponent } from './app/app.component';
-import { DashboardComponent } from './app/dashboard.component';
-import { DocumentLabelComponent } from './app/document-label.component';
+import { DashboardComponent } from './app/dashboard/dashboard.component';
+import { DocumentLabelComponent } from './app/document-label/document-label.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },

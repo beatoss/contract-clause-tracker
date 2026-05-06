@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ApiService, DocumentDetail, Sentence } from './api.service';
+import { ApiService, DocumentDetail, Sentence } from '../api.service';
 
 @Component({
   selector: 'app-document-label',
