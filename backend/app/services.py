@@ -2,7 +2,7 @@ import hashlib
 from pathlib import Path
 
 from sqlalchemy import or_, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.models import ClauseLabel, Document, Sentence
 from app.parser import CLAUSE_TYPES, extract_title, normalize_clause_type, parse_contract
