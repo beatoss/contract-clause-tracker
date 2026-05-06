@@ -12,6 +12,28 @@ Open `http://localhost:4200`. Use **Seed** to import the included example contra
 
 The API is also available at `http://localhost:8000`, with OpenAPI docs at `http://localhost:8000/docs`.
 
+## Run Locally For Debugging
+
+Start the backend:
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Start the frontend in another terminal:
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+The local Angular proxy sends `/api` requests to `http://localhost:8000`. Docker uses `proxy.docker.conf.json` so Compose still routes to the `backend` service.
+
 ## What It Does
 
 - Uploads plain-text or Markdown contracts.

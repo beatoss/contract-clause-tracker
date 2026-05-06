@@ -3,10 +3,10 @@ FROM node:20-alpine
 WORKDIR /app
 
 COPY frontend/package.json frontend/package-lock.json ./
-RUN npm ci
+RUN npm install
 
 COPY frontend/ ./
 
 EXPOSE 4200
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:docker"]
