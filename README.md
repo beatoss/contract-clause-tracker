@@ -8,7 +8,7 @@ A small full-stack coding-challenge app for tracking clause types across uploade
 docker-compose up --build
 ```
 
-Open `http://localhost:4200`. Use **Seed** to import the included example contracts, or upload a UTF-8 `.txt`, `.md`, or `.markdown` file.
+Open `http://localhost:4200/dashboard`. Use **Seed examples** to import the included example contracts, or upload a UTF-8 `.txt`, `.md`, or `.markdown` file.
 
 The API is also available at `http://localhost:8000`, with OpenAPI docs at `http://localhost:8000/docs`.
 
@@ -44,6 +44,7 @@ The local Angular proxy sends `/api` requests to `http://localhost:8000`. Docker
   - Non-Compete
 - Shows a searchable/filterable dashboard of documents.
 - Groups documents by clause type.
+- Opens document labeling at `/document/:id/label`.
 - Imports labels from comments like `<!-- Clause Type: Limitation of Liability -->` when they appear after a sentence in the sample contracts.
 
 ## Architecture

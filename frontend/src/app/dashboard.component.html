@@ -1,0 +1,96 @@
+<main class="page">
+  <header class="topbar">
+    <div>
+      <p>Clause Tracker</p>
+      <h1>Document Dashboard</h1>
+    </div>
+    <button type="button" class="secondary" (click)="seedExamples()">Seed examples</button>
+  </header>
+
+  <section class="upload-panel">
+    <div>
+      <h2>Upload contract</h2>
+      <p>Upload a Markdown or plain-text contract to split it into labelable sentences.</p>
+    </div>
+    <label class="upload-button" for="contract-upload">
+      <span>{{ uploading ? 'Uploading...' : 'Choose .md or .txt file' }}</span>
+      <input id="contract-upload" type="file" accept=".txt,.md,.markdown,text/plain,text/markdown" (change)="onFileSelected($event)">
+    </label>
+  </section>
+
+  <section class="toolbar">
+    <input type="search" placeholder="Search title, filename, or sentence text" [(ngModel)]="search" (input)="refreshDocuments()">
+    <select [(ngModel)]="clauseFilter" (change)="refreshDocuments()">
+      <option value="">All clause types</option>
+      <option *ngFor="let type of clauseTypes" [value]="type">{{ type }}</option>
+    </select>
+    <label class="toggle">
+      <input type="checkbox" [(ngModel)]="grouped" (change)="refreshDocuments()">
+      Group by clause
+    </label>
+  </section>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+  <p class="empty" *ngIf="!loading && documents.length === 0">No contracts yet. Upload a file or seed the examples.</p>
+
+  <ng-container *ngIf="!grouped">
+    <section class="table-wrap" *ngIf="documents.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th>Sentences</th>
+            <th>Labeled</th>
+            <th>Clause Counts</th>
+            <th>Updated</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let document of documents; trackBy: trackDocument">
+            <td>
+              <strong>{{ document.title }}</strong>
+              <small>{{ document.filename }}</small>
+            </td>
+            <td>{{ document.sentence_count }}</td>
+            <td>
+              <span class="progress">{{ documentProgress(document) }}%</span>
+              <small>{{ document.labeled_count }} labeled</small>
+            </td>
+            <td>
+              <div class="counts">
+                <span *ngFor="let type of clauseTypes">{{ type }} <b>{{ document.clause_counts[type] || 0 }}</b></span>
+              </div>
+            </td>
+            <td>{{ document.updated_at | date: 'short' }}</td>
+            <td>
+              <a class="action" [routerLink]="['/document', document.id, 'label']">Label</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </ng-container>
+
+  <ng-container *ngIf="grouped">
+    <section class="group" *ngFor="let group of visibleGroups()">
+      <h2>{{ group.group }}</h2>
+      <div class="table-wrap">
+        <table>
+          <tbody>
+            <tr *ngFor="let document of group.documents; trackBy: trackDocument">
+              <td>
+                <strong>{{ document.title }}</strong>
+                <small>{{ document.filename }}</small>
+              </td>
+              <td>{{ document.sentence_count }} sentences</td>
+              <td>{{ document.labeled_count }} labeled</td>
+              <td><span class="progress">{{ documentProgress(document) }}%</span></td>
+              <td><a class="action" [routerLink]="['/document', document.id, 'label']">Label</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </ng-container>
+</main>

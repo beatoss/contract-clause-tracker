@@ -1,0 +1,36 @@
+<main class="page">
+  <header class="topbar">
+    <a class="back" routerLink="/dashboard">Back to dashboard</a>
+    <div class="stats" *ngIf="document">
+      <span>{{ document.sentence_count }} sentences</span>
+      <span>{{ document.labeled_count }} labeled</span>
+    </div>
+  </header>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <section class="document-header" *ngIf="document">
+    <p>{{ document.filename }}</p>
+    <h1>{{ document.title }}</h1>
+  </section>
+
+  <div class="chips" *ngIf="document">
+    <span *ngFor="let type of clauseTypes">
+      {{ type }}
+      <strong>{{ document.clause_counts[type] || 0 }}</strong>
+    </span>
+  </div>
+
+  <article class="sentences" *ngIf="document">
+    <div class="sentence" *ngFor="let sentence of document.sentences">
+      <div>
+        <small>Sentence {{ sentence.position }}</small>
+        <p>{{ sentence.text }}</p>
+      </div>
+      <select [ngModel]="sentence.clause_type || ''" (ngModelChange)="updateSentenceLabel(sentence, $event)">
+        <option value="">Unlabeled</option>
+        <option *ngFor="let type of clauseTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+  </article>
+</main>
