@@ -34,24 +34,17 @@ npm start
 
 The local Angular proxy sends `/api` requests to `http://localhost:8000`. Docker uses `proxy.docker.conf.json` so Compose still routes to the `backend` service.
 
-## What It Does
+## Design decisions
 
-- Uploads plain-text or Markdown contracts.
-- Splits contract text into sentence-level clauses.
-- Lets a user label each sentence as:
-  - Limitation of Liability
-  - Termination for Convenience
-  - Non-Compete
-- Shows a searchable/filterable dashboard of documents.
-- Groups documents by clause type.
-- Opens document labeling at `/document/:id/label`.
-- Imports labels from comments like `<!-- Clause Type: Limitation of Liability -->` when they appear after a sentence in the sample contracts.
+- Server side searching / filtering
+- Opens document labeling at `/document/:id/label`. Could have also gone for a modal menu.
+- Updates labels immediately. Could have also gone for a Save button.
 
 ## Architecture
 
 - **Backend:** FastAPI, SQLAlchemy, SQLite.
-- **Frontend:** Angular standalone app.
-- **Database:** SQLite in a Docker volume.
+- **Frontend:** Angular standalone app. (could have gone for Angular 21)
+- **Database:** SQLite.
 - **Containerization:** `docker-compose.yml` runs the API and Angular dev server.
 
 The backend is intentionally compact: `documents` store metadata, `sentences` store ordered sentence text, and `clause_labels` stores the single active label for a sentence.
@@ -67,17 +60,27 @@ The backend is intentionally compact: `documents` store metadata, `sentences` st
 
 ## Tests
 
-Backend tests cover the critical paths:
+Backend tests cover the critical API paths. From a fresh checkout, install the backend dependencies once:
 
 ```bash
 cd backend
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+Then run the tests from the `backend` directory:
+
+```bash
 pytest
 ```
 
+The tests use a temporary SQLite database, so they do not modify your local development database or Docker volume.
+
 ## Extension Notes
 
-- **AI labeling:** add a background endpoint that proposes labels for unlabeled sentences, store suggestions separately from accepted labels, and let reviewers approve or reject them.
-- **Scaling:** move from SQLite to PostgreSQL, add pagination/search indexes, and run parsing/AI work in a queue.
-- **Auditability:** add label history with actor, timestamp, previous label, and confidence/source.
-- **Clause taxonomy:** replace the fixed list with a configurable `clause_types` table.
+- **AI labeling:** add a button or background service that proposes labels for unlabeled sentences, store suggestions separately from accepted labels, and let reviewers approve or reject them.
+- **Scaling:** move from SQLite to PostgreSQL. Decide between id or uuid as the primary key. Add pagination. searching: only after 2 characters and with a delay.
+- **Technical:** upgrade to Angular 21 with singals, node 24 LTS, add AGENTS.md / copilot-instructions.md with more guidelines about technical decisions.
+- **Auditability:** add label history with user, timestamp, previous label, and confidence/source.
+- **UX/DESIGN**: Make better UX and a nicer design:-). Decide for a primary component library. Use icons. More and better error messages. Example: if you oploaded a document already.

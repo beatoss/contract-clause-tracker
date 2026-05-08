@@ -1,3 +1,5 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, File, HTTPException, Query, UploadFile
@@ -10,7 +12,14 @@ from app.parser import CLAUSE_TYPES
 from app.schemas import DocumentDetail, DocumentListResponse, GroupSummary, LabelUpdate, SentenceOut
 from app.services import clause_group, create_document, list_documents, seed_example_contracts, serialize_sentence, set_sentence_label, summarize_document
 
-app = FastAPI(title="Contract Clause Tracker")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    init_db()
+    yield
+
+
+app = FastAPI(title="Contract Clause Tracker", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,11 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("startup")
-def startup() -> None:
-    init_db()
 
 
 @app.get("/api/health")
