@@ -1,5 +1,7 @@
 # Contract Clause Tracker
 
+Note: The engineer has only 1 month of professional Python experience, using Python to steer a microscope in robotics, not to build APIs.
+
 A small full-stack coding-challenge app for tracking clause types across uploaded contracts.
 
 ## Run
